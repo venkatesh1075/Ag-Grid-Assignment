@@ -1,0 +1,137 @@
+<div class="container mt-4">
+  <h2>Add/Edit/Delete</h2>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <h4>{{ editMode ? "Edit" : "Add" }}</h4>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="ruleForm" (ngSubmit)="submitForm()">
+        <input type="hidden" formControlName="id" />
+
+        <div class="row">
+          <div class="col-md-6 col-sm-12 mb-3">
+            <label for="ruleName" class="form-label">Rule Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="ruleName"
+              formControlName="ruleName"
+            />
+          </div>
+
+          <div class="col-md-3 col-sm-12 mb-3">
+            <label for="active" class="form-label">Active</label>
+            <select class="form-select" id="active" formControlName="active">
+              @for (option of yesNoOptions; track $index) {
+              <option [value]="option">
+                {{ option }}
+              </option>
+              }
+            </select>
+          </div>
+
+          <div class="col-md-3 col-sm-12 mb-3">
+            <label for="type" class="form-label">Type</label>
+            <select class="form-select" id="type" formControlName="type">
+              @for (option of typeOptions; track $index) {
+              <option [value]="option">
+                {{ option }}
+              </option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 col-sm-12 mb-3">
+            <label for="favourite" class="form-label">Favourite</label>
+            <select
+              class="form-select"
+              id="favourite"
+              formControlName="favourite"
+            >
+              @for (option of yesNoOptions; track $index) {
+              <option [value]="option">
+                {{ option }}
+              </option>
+              }
+            </select>
+          </div>
+
+          <div class="col-md-4 col-sm-12 mb-3">
+            <label for="scheduled" class="form-label">Scheduled</label>
+            <select
+              class="form-select"
+              id="scheduled"
+              formControlName="scheduled"
+            >
+              @for (option of yesNoOptions; track $index) {
+              <option [value]="option">
+                {{ option }}
+              </option>
+              }
+            </select>
+          </div>
+
+          <div class="col-md-4 col-sm-12 mb-3">
+            <label for="alert" class="form-label">Alert</label>
+            <select class="form-select" id="alert" formControlName="alert">
+              @for (option of yesNoOptions; track $index) {
+              <option [value]="option">
+                {{ option }}
+              </option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-secondary me-2"
+            (click)="resetForm()"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">
+            {{ editMode ? "Update" : "Save" }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h4>Data Table</h4>
+      <div>
+        <span *ngIf="selectedRows.length > 0" class="me-2">
+          Selected: {{ selectedRows.length }}
+        </span>
+        <button
+          class="btn btn-danger"
+          [disabled]="selectedRows.length === 0"
+          (click)="onDeleteRows()"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <ag-grid-angular
+        style="width: 100%; height: 500px"
+        class="ag-theme-alpine"
+        [columnDefs]="columnDefs"
+        [rowData]="rowData"
+        [rowSelection]="'multiple'"
+        [defaultColDef]="defaultColDef"
+        (gridReady)="onGridReady($event)"
+        (selectionChanged)="onSelectionChanged()"
+        [suppressRowClickSelection]="true"
+        [gridOptions]="gridOptions"
+      >
+      </ag-grid-angular>
+    </div>
+  </div>
+</div>
